@@ -33,12 +33,13 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
 
-            <!-- NFC Reader -->
+            <!-- NFC Reader - aplikasi dapat otomatis membaca data NFC dengan format vCard -->
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data android:mimeType="text/x-vcard"/>
             </intent-filter>
+
 
         </activity>
 
