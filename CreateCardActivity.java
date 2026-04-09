@@ -54,7 +54,7 @@ public class CreateCardActivity extends AppCompatActivity {
         EditText email = findViewById(R.id.etEmail);
 
         findViewById(R.id.btnWrite).setOnClickListener(v -> {
-
+            //data yang diinput dikonversi dalam format vCard
             vCardData = "BEGIN:VCARD\nVERSION:3.0\n"
                     + "FN:" + name.getText().toString() + "\n"
                     + "TEL:" + phone.getText().toString() + "\n"
@@ -87,7 +87,7 @@ public class CreateCardActivity extends AppCompatActivity {
             nfcAdapter.disableForegroundDispatch(this);
         }
     }
-
+    //method yang otomatis dipanggil saat user menempelkan NFC ke perangkat
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -102,30 +102,30 @@ public class CreateCardActivity extends AppCompatActivity {
     private void writeToTag(Tag tag) {
 
         try {
-
+            //data vCard diubah menjadi NDEF Record dengan tipe MIME (Multipurpose Internet Mail Extensions) text/x-vcard
             NdefRecord record = NdefRecord.createMime(
                     "text/x-vcard",
                     vCardData.getBytes(StandardCharsets.UTF_8)
             );
-
+            //dibungkus menjadi NDEF Message sebelum ditulis ke NFC
             NdefMessage message = new NdefMessage(new NdefRecord[]{record});
 
             Ndef ndef = Ndef.get(tag);
 
             if (ndef != null) {
 
-                ndef.connect();
-                ndef.writeNdefMessage(message);
+                ndef.connect(); //aplikasi terhubung ke NFC
+                ndef.writeNdefMessage(message); //menuliskan data
                 ndef.close();
-
-                Toast.makeText(this, "Kartu berhasil dibuat", Toast.LENGTH_SHORT).show();
+                //jika berhasil maka data tersimpan di NFC
+                Toast.makeText(this, "Card Successfully Created", Toast.LENGTH_SHORT).show();
 
             } else {
-                Toast.makeText(this, "Tag tidak mendukung NDEF", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Tag does not support NDEF", Toast.LENGTH_SHORT).show();
             }
 
         } catch (Exception e) {
-            Toast.makeText(this, "Gagal menulis NFC", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Failed to Write NFC", Toast.LENGTH_SHORT).show();
         }
     }
 }
