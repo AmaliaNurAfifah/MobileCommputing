@@ -30,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
 
         Button btnCreate = findViewById(R.id.btnCreate);
         Button btnScan = findViewById(R.id.btnScan);
-
+        //menghubungkan aplikasi dengan hardware NFC pada perangkat
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-
+        //supaya aplikasi tetap menerima event NFC meski sedang berjalan
         pendingIntent = PendingIntent.getActivity(
                 this,
                 0,
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Tombol Scan NFC
         btnScan.setOnClickListener(v -> {
-
+            //validasi NFC
             if (nfcAdapter == null) {
 
                 new AlertDialog.Builder(this)
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                     pendingIntent,
                     null,
                     null
-            );
+            ); //mengaktifkan NFC agar mendapat prioritas saat membaca tag
         }
     }
 
@@ -102,10 +102,10 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
 
         if (nfcAdapter != null) {
-            nfcAdapter.disableForegroundDispatch(this);
+            nfcAdapter.disableForegroundDispatch(this); //NFC dinonaktifkan agar tidak menganggu aplikasi lain dan menghemat baterai
         }
     }
-
+    //method otomatis dipanggil ketika perangkat mendeteksi tag NFC
     @Override
     protected void onNewIntent(Intent intent) {
 
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         if (!scanMode) return;
 
         Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-
+        //data dari NFC dibaca dalam bentuk NDEF Message, kemudian payload diambil dan dikonversi menjadi string agar dapat ditampilkan
         Parcelable[] rawMessages =
                 intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
 
